@@ -59,36 +59,45 @@ function initNullGen () {
         }
 
         this.checkCLick = function (coordinatesSquare) { 
-            // add or discard from lifeCells and draw green redraw white   
+            // 1. check if it is in coordinates is in lifeCells
+            // 2. add or discard from lifeCells 
+            // 3. draw green redraw white   
+
             // check if clicked square is in lifeCells
-            let isInlifeCells = false // #! isnt it a just a dumb name
+            let isInlifeCells = false
 
             lifeCells.forEach(square => { 
                 if ((square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1])) {
-                    isInlifeCells = true
+                    isInlifeCells = true;
                 }   
             })
             
+            // push and draw green or pop and redraw white
             if (isInlifeCells == false) {
                 lifeCells.push(coordinatesSquare)
-                rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
+                rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); // #! shouldnt be here 
             } else {
                 lifeCells.pop(coordinatesSquare)
-                rectangle("white", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
+                rectangle("white", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); // #! shouldnt be here 
             }
         }
+
+        // clicking into canvas
+        this.mouseClick = function (canvas, e) {
+            let coordinatesClick = this.getCursorPosition(canvas, e);
+            let coordinatesSquare = this.clickedSquare(coordinatesClick);
+        
+            this.checkCLick(coordinatesSquare);
+        }
+
 }
 
-
-
-
-canvas.addEventListener('mousedown', function(e) { // #! how function(e) actually works
-
-    let coordinatesClick = initialize.getCursorPosition(canvas, e);
-    let coordinatesSquare = initialize.clickedSquare(coordinatesClick);
-
-    initialize.checkCLick(coordinatesSquare)
-    
-})
-
 let initialize = new initNullGen;
+
+canvas.addEventListener('mousedown',function (e) {
+    initialize.mouseClick(canvas, e); 
+})    
+
+
+
+
