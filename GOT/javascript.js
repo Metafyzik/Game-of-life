@@ -67,23 +67,23 @@ canvas.addEventListener('mousedown', function(e) { // #! how function(e) actuall
     let coordinatesClick = testClicking.getCursorPosition(canvas, e);
     let coordinatesSquare = testClicking.clickedSquare(coordinatesClick);
 
-    // add or discard from lifeCells and draw
-    let isIn = false
+    // add or discard from lifeCells and draw green redraw white
+    
 
-    lifeCells.forEach(square => {
+    // check if clicked square is in lifeCells
+    let isInlifeCells = false // #! isnt it a just a dumb name
 
+    lifeCells.forEach(square => { 
         if ((square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1])) {
-            isIn = true
-            console.log("in forEach")
-        }  
-        console.log(lifeCells)   
+            isInlifeCells = true
+        }   
     })
 
-    if (isIn == false) {
+    // 
+    if (isInlifeCells == false) {
         lifeCells.push(coordinatesSquare)
         rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
     } else {
-        console.log("else")
         lifeCells.pop(coordinatesSquare)
         rectangle("white", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
     }
