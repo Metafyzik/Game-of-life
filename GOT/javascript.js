@@ -37,9 +37,9 @@ function Clicking () {
 
     // cursor coordinates
     this.getCursorPosition = function  (canvas, event) {
-        const rect = canvas.getBoundingClientRect()
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const rect = canvas.getBoundingClientRect() //#! how does it work?
+        const x = event.clientX - rect.left; //#! how does it work?
+        const y = event.clientY - rect.top; //#! how does it work?
 
         //console.log("x: " + x + " y: " + y); //#! clean after
 
@@ -59,10 +59,42 @@ function Clicking () {
     }
 }
 
-canvas.addEventListener('mousedown', function(e) {
+// array containing life cells
+let lifeCells = []; 
+
+
+canvas.addEventListener('mousedown', function(e) { // #! how function(e) actually works
     let coordinatesClick = testClicking.getCursorPosition(canvas, e);
     let coordinatesSquare = testClicking.clickedSquare(coordinatesClick);
+
+    // add or discard from lifeCells and draw
+    let isIn = false
+
+    lifeCells.forEach(square => {
+
+        if ((square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1])) {
+            isIn = true
+            console.log("in forEach")
+        }  
+        console.log(lifeCells)   
+    })
+
+    if (isIn == false) {
+        lifeCells.push(coordinatesSquare)
+        rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
+    } else {
+        console.log("else")
+        lifeCells.pop(coordinatesSquare)
+        rectangle("white", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
+    }
+
+
+
+    //rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); // draw cell
+    
 })
+
+
 
 
 let testClicking = new Clicking;
