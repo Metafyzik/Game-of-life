@@ -32,69 +32,63 @@ function drawGrid() {
 rectangle("black", 0, 0, canvas.width, canvas.height);  
 drawGrid();
 
-
-function Clicking () {
-
-    // cursor coordinates
-    this.getCursorPosition = function  (canvas, event) {
-        const rect = canvas.getBoundingClientRect() //#! how does it work?
-        const x = event.clientX - rect.left; //#! how does it work?
-        const y = event.clientY - rect.top; //#! how does it work?
-
-        //console.log("x: " + x + " y: " + y); //#! clean after
-
-        return [x,y]
-       // clickedSquare(x,y)
-    }
-
-    // coordinates of sqaure that is clicked into
-    this.clickedSquare = function (coordinates) {
-        row = Math.floor( coordinates[0] / tileSize );
-        column = Math.floor( coordinates[1]  / tileSize );
-       
-        // console.log(" column " + row + " row = " + column  );  //#! clean after
-        
-        return [row ,column]
-        //drawXO(row * tileSize,column* tileSize)
-    }
-}
-
 // array containing life cells
 let lifeCells = []; 
 
+function initNullGen () {
+        // cursor coordinates
+        this.getCursorPosition = function  (canvas, event) {
+            const rect = canvas.getBoundingClientRect() //#! how does it work?
+            const x = event.clientX - rect.left; //#! how does it work?
+            const y = event.clientY - rect.top; //#! how does it work?
+    
+            //console.log("x: " + x + " y: " + y); //#! clean after
+    
+            return [x,y]
+        }
+    
+        // coordinates of sqaure that is clicked into
+        this.clickedSquare = function (coordinates) {
+            row = Math.floor( coordinates[0] / tileSize );
+            column = Math.floor( coordinates[1]  / tileSize );
+           
+            // console.log(" column " + row + " row = " + column  );  //#! clean after
+            
+            return [row ,column]
+
+        }
+
+        this.checkCLick = function (coordinatesSquare) { 
+            // add or discard from lifeCells and draw green redraw white   
+            // check if clicked square is in lifeCells
+            let isInlifeCells = false // #! isnt it a just a dumb name
+
+            lifeCells.forEach(square => { 
+                if ((square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1])) {
+                    isInlifeCells = true
+                }   
+            })
+            
+            if (isInlifeCells == false) {
+                lifeCells.push(coordinatesSquare)
+                rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
+            } else {
+                lifeCells.pop(coordinatesSquare)
+                rectangle("white", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
+            }
+        }
+}
+
+
+
 
 canvas.addEventListener('mousedown', function(e) { // #! how function(e) actually works
-    let coordinatesClick = testClicking.getCursorPosition(canvas, e);
-    let coordinatesSquare = testClicking.clickedSquare(coordinatesClick);
 
-    // add or discard from lifeCells and draw green redraw white
-    
+    let coordinatesClick = initialize.getCursorPosition(canvas, e);
+    let coordinatesSquare = initialize.clickedSquare(coordinatesClick);
 
-    // check if clicked square is in lifeCells
-    let isInlifeCells = false // #! isnt it a just a dumb name
-
-    lifeCells.forEach(square => { 
-        if ((square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1])) {
-            isInlifeCells = true
-        }   
-    })
-
-    // 
-    if (isInlifeCells == false) {
-        lifeCells.push(coordinatesSquare)
-        rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
-    } else {
-        lifeCells.pop(coordinatesSquare)
-        rectangle("white", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
-    }
-
-
-
-    //rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); // draw cell
+    initialize.checkCLick(coordinatesSquare)
     
 })
 
-
-
-
-let testClicking = new Clicking;
+let initialize = new initNullGen;
