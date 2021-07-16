@@ -42,8 +42,6 @@ function initNullGen () {
             const x = event.clientX - rect.left; //#! how does it work?
             const y = event.clientY - rect.top; //#! how does it work?
     
-            //console.log("x: " + x + " y: " + y); //#! clean after
-    
             return [x,y]
         }
     
@@ -51,35 +49,43 @@ function initNullGen () {
         this.clickedSquare = function (coordinates) {
             row = Math.floor( coordinates[0] / tileSize );
             column = Math.floor( coordinates[1]  / tileSize );
-           
-            // console.log(" column " + row + " row = " + column  );  //#! clean after
             
             return [row ,column]
-
         }
 
+        // check if clicked square is in lifeCells
         this.checkCLick = function (coordinatesSquare) { 
-            // 1. check if it is in coordinates is in lifeCells
-            // 2. add or discard from lifeCells 
-            // 3. draw green redraw white   
-
-            // check if clicked square is in lifeCells
             let isInlifeCells = false
 
-            lifeCells.forEach(square => { 
-                if ((square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1])) {
-                    isInlifeCells = true;
-                }   
-            })
-            
-            // push and draw green or pop and redraw white
+            if (lifeCells.length > 0) { // for case of empty lifeCells //#! if this special condition is nedeed
+
+                lifeCells.forEach(square => { 
+                    if (square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1]) {
+                        isInlifeCells = true;
+                    }   
+                })
+            }
+            return isInlifeCells;
+        }
+
+        // push or pop cell from lifeCells
+        this.pushPopCell = function (isInlifeCells, coordinatesSquare) {           
             if (isInlifeCells == false) {
                 lifeCells.push(coordinatesSquare)
-                rectangle("rgb(0,255,0)", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); // #! shouldnt be here 
             } else {
                 lifeCells.pop(coordinatesSquare)
-                rectangle("white", coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); // #! shouldnt be here 
             }
+        }
+
+        // draw new cell or redraw poped cell back to white 
+        this.drawRedrawCell = function (isInlifeCells, coordinatesSquare) {
+            let color;
+            if (isInlifeCells == false) {
+                color = "rgb(0,255,0)"
+            } else {
+                color = "white"
+            }
+            rectangle(color, coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
         }
 
         // clicking into canvas
@@ -87,12 +93,26 @@ function initNullGen () {
             let coordinatesClick = this.getCursorPosition(canvas, e);
             let coordinatesSquare = this.clickedSquare(coordinatesClick);
         
-            this.checkCLick(coordinatesSquare);
+            let isInlifeCells = this.checkCLick(coordinatesSquare);
+            this.pushPopCell(isInlifeCells, coordinatesSquare);
+            this.drawRedrawCell(isInlifeCells, coordinatesSquare);
+            
         }
 
+        // pressing enter to start the game
+        this.pressEnter = function (e) {
+            if (e.keyCode === 13) {
+                console.log( "eneter has been pressed")  
+            }
+        }    
 }
 
 let initialize = new initNullGen;
+
+
+// listeners
+document.addEventListener("keydown", initialize.pressEnter) 
+
 
 canvas.addEventListener('mousedown',function (e) {
     initialize.mouseClick(canvas, e); 
