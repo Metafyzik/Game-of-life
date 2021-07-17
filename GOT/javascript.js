@@ -128,7 +128,7 @@ function appRules () {
     this.lifeCellsAround = function (lifeCells,neighborSquares) {
         let surrondingLifecells = 0;// amount of live cells surronding live cell #! better name
         
-        for (let i = 0; i < neighborSquares.length; i++) {
+        for (let i = 0; i < neighborSquares.length; i++) { // time complexity n*m 
             if (lifeCells.includes(neighborSquares[i])) {
                 surrondingLifecells += 1;  
             }
@@ -137,8 +137,8 @@ function appRules () {
         return surrondingLifecells
     }
 
-    this.popDeadCells = function (surrondingLifecells, lifeCells) {
-        if 
+    this.popDeadCells = function (surrondingLifecells) {
+        return surrondingLifecells ==! 2 && surrondingLifecells ==! 
     }
 }
 
