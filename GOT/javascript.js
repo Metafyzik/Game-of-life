@@ -61,10 +61,7 @@ function initNullGen () {
 
             if (lifeCells.length > 0) { // for case of empty lifeCells //#! if this special condition is nedeed
 
-                lifeCells.forEach(square => { 
-                    if (square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1]) {
-                        isInlifeCells = true;
-                    }   
+ 
                 })
             }
             return isInlifeCells;
@@ -108,6 +105,38 @@ function initNullGen () {
             }
         }    
 }
+
+
+
+function appRules () {
+
+    this.mooreNeighborhood = function (square) { //! terminology
+        let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
+
+        neighborSquares.forEach(neighborSquare => { 
+            neighborSquare = [square[0] + neighborSquare[0],square[1] + neighborSquare[1]]
+        })
+
+        return neighborSquares
+    }    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let initialize = new initNullGen;
 
