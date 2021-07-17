@@ -61,7 +61,10 @@ function initNullGen () {
 
             if (lifeCells.length > 0) { // for case of empty lifeCells //#! if this special condition is nedeed
 
- 
+                lifeCells.forEach(square => { 
+                    if (square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1]) {
+                        isInlifeCells = true;
+                    }   
                 })
             }
             return isInlifeCells;
