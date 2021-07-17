@@ -8,11 +8,12 @@ const tileCountX = canvas.width / tileSize;
 const tileCountY = canvas.height / tileSize;
 
 
-// drawing background
+// drawing functionality
 function rectangle(color, x, y, width, height) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
 }
+
 
 function drawGrid() {
     for (let i = 0; i < tileCountX; i++) {
@@ -28,8 +29,9 @@ function drawGrid() {
     }
 }
 
-
-rectangle("black", 0, 0, canvas.width, canvas.height);  
+// drawing black background in size of the canvas 
+rectangle("black", 0, 0, canvas.width, canvas.height); 
+// white squares in to black canvas to create grid 
 drawGrid();
 
 // array containing life cells
@@ -112,7 +114,6 @@ let initialize = new initNullGen;
 
 // listeners
 document.addEventListener("keydown", initialize.pressEnter) 
-
 
 canvas.addEventListener('mousedown',function (e) {
     initialize.mouseClick(canvas, e); 
