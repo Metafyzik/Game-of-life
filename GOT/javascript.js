@@ -112,7 +112,6 @@ function initNullGen () {
 
 
 function appRules () {
-
     // for every cells count coordinates of moore neighborhood 
     this.mooreNeighborhood = function (square) { //! terminology
         let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
@@ -137,8 +136,16 @@ function appRules () {
         return surrondingLifecells
     }
 
-    this.popDeadCells = function (surrondingLifecells) {
-        return surrondingLifecells ==! 2 && surrondingLifecells ==! 
+    this.PopOrStay = function (surrondingLifecells) { // #! suboptimal name
+        return surrondingLifecells ==! 2 && surrondingLifecells ==! 3
+    }
+
+    this.popDeadCells = function (square) {
+        let neighborSquares = this.mooreNeighborhood(square)
+        let surrondingLifecells = this.lifeCells(AroundlifeCells,neighborSquares)
+
+        return PopOrStay(surrondingLifecells)        
+
     }
 }
 
