@@ -126,15 +126,19 @@ function appRules () {
     }
     // count how many cells in moore neighborhood of (particular cells) and lifeCells are equal 
     this.lifeCellsAround = function (lifeCells,neighborSquares) {
-        let x = 0;// amount of live cells surronding live cell #! better name
+        let surrondingLifecells = 0;// amount of live cells surronding live cell #! better name
         
         for (let i = 0; i < neighborSquares.length; i++) {
             if (lifeCells.includes(neighborSquares[i])) {
-                x += 1;  
+                surrondingLifecells += 1;  
             }
         }
-        console.log("x = ",x)
-        return x
+        console.log("x = ",surrondingLifecells)
+        return surrondingLifecells
+    }
+
+    this.popDeadCells = function (surrondingLifecells, lifeCells) {
+        if 
     }
 }
 
