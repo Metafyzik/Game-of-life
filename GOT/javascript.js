@@ -113,7 +113,7 @@ function initNullGen () {
 
 function appRules () {
 
-    //for every cells count coordinates of moore neighborhood 
+    // for every cells count coordinates of moore neighborhood 
     this.mooreNeighborhood = function (square) { //! terminology
         let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
 
@@ -123,15 +123,28 @@ function appRules () {
         }
 
         return neighborSquares    
-    }    
+    }
+    // count how many cells in moore neighborhood of (particular cells) and lifeCells are equal 
+    this.lifeCellsAround = function (lifeCells,neighborSquares) {
+        let x = 0;// amount of live cells surronding live cell #! better name
+        
+        for (let i = 0; i < neighborSquares.length; i++) {
+            if (lifeCells.includes(neighborSquares[i])) {
+                x += 1;  
+            }
+        }
+        console.log("x = ",x)
+        return x
+    }
 }
 
 
 
 
-
+// testing initNullGen
 let initialize = new initNullGen;
 
+// testing appRules
 let testappRules = new appRules;
 
 testappRules.mooreNeighborhood([9,9])
