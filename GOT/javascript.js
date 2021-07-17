@@ -110,13 +110,14 @@ function initNullGen () {
 
 function appRules () {
 
+    //for every cells count coordinates of moore neighborhood 
     this.mooreNeighborhood = function (square) { //! terminology
         let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
 
         neighborSquares.forEach(neighborSquare => { 
             neighborSquare = [square[0] + neighborSquare[0],square[1] + neighborSquare[1]]
         })
-
+        console.log("neighborSquares = ",neighborSquares)
         return neighborSquares
     }    
 }
@@ -125,21 +126,11 @@ function appRules () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 let initialize = new initNullGen;
 
+let testappRules = new appRules;
+
+testappRules.mooreNeighborhood([9,9])
 
 // listeners
 document.addEventListener("keydown", initialize.pressEnter) 
