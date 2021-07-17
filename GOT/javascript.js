@@ -117,11 +117,12 @@ function appRules () {
     this.mooreNeighborhood = function (square) { //! terminology
         let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
 
-        neighborSquares.forEach(neighborSquare => { 
-            neighborSquare = [square[0] + neighborSquare[0],square[1] + neighborSquare[1]]
-        })
-        console.log("neighborSquares = ",neighborSquares)
-        return neighborSquares
+        for (let i = 0; i < neighborSquares.length; i++) {
+            neighborSquares[i][0] += square[0];
+            neighborSquares[i][1] += square[1];
+        }
+
+        return neighborSquares    
     }    
 }
 
