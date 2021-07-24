@@ -162,7 +162,7 @@ let initialize = new initNullGen;
 // testing appRules
 let testappRules = new appRules;
 lifeCells = [[8,9],[9,9],[10,9]]
-lifeCells.filter(testappRules.popDeadCells)
+lifeCells = lifeCells.filter(testappRules.popDeadCells)
 console.log(lifeCells)
 
 // listeners
