@@ -34,7 +34,8 @@ rectangle("black", 0, 0, canvas.width, canvas.height);
 drawGrid();
 
 // array containing life cells
-let lifeCells = []; 
+let lifeCells = [];
+let NewBornCells = []; 
 
 function initNullGen () {
         // cursor coordinates
@@ -164,11 +165,9 @@ function appRules () {
         return testappRules.PopOrStay(surrondingLifecells)
 
     }
-    this.pushBornCells = function () {
+    this.newBornCells = function () {
         let newBornCells = [];
         let numberTimesInArray = 0;
-
-        //console.log(alldeadllsNeighbors)
 
         for (let i = 0; i < alldeadllsNeighbors.length; i++) { //n*n
             for (let j = 0; j < alldeadllsNeighbors.length; j++) {
@@ -177,14 +176,12 @@ function appRules () {
                     //console.log("numberTimesInArra",numberTimesInArray)
                 }
             }
-
             if (numberTimesInArray == 3) { // check three live neighbors
                 // check if cell is not already in NewBornCells
                 let isInNewBornCells = false
                 for (cell of newBornCells) {
                     if ( JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(cell) ) {
                         isInNewBornCells = true
- 
                     }
                 }
                 if (isInNewBornCells == false) {
@@ -194,7 +191,7 @@ function appRules () {
             }
             numberTimesInArray = 0;
         } 
-        console.log("newBornCells",newBornCells.sort())
+        return newBornCells
     }            
     
 }
@@ -208,9 +205,9 @@ let initialize = new initNullGen;
 let testappRules = new appRules;
 lifeCells = [[9,8],[9,9],[9,10]]
 lifeCells = lifeCells.filter(testappRules.popDeadCells)
-console.log(lifeCells)
-testappRules.pushBornCells()
 
+newBornCells = testappRules.newBornCells()
+console.log(newBornCells)
 // listeners
 document.addEventListener("keydown", initialize.pressEnter) 
 
