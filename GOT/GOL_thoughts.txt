@@ -33,3 +33,8 @@ Jinými slovy, přidává, nebo ubírá prvky z lifeCells
 - použít filter 
 
 - Otázka potřebuji samostanou metodu na zjistění podmínky vyřadit či nechat?
+
+- Hacky way: jak držet hodnoty souřadnic čtverců jako datový typ string místo array. [0,0] -> "0 0". To znamená, že mohu použít udržovat živé bunky jako řetězce v množině (set), místo array v array, čímž odpadává
+problém vyhodnocování dvou stejných polí v Javascriptu. Na druhou stranu vysvtává problém zakódování souřadnic a "roz"kódování souřadnic. Mimojiné získat pozici x, y čtverce pro vykreslení v metodě drawSquare, 
+k čemuž  převádění mezi číslem (number) a řetězce a naopak. Ale jak by mi pomohlo
+

@@ -14,7 +14,6 @@ function rectangle(color, x, y, width, height) {
     ctx.fillRect(x, y, width, height);
 }
 
-
 function drawGrid() {
     for (let i = 0; i < tileCountX; i++) {
         for (let j = 0; j < tileCountY; j++) {
@@ -87,6 +86,7 @@ function initNullGen () {
             } else {
                 color = "white"
             }
+
             rectangle(color, coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
         }
 
@@ -112,6 +112,8 @@ function initNullGen () {
 
 
 function appRules () {
+    alldeadllsNeighbors = [] // duplicite values
+
     // for every cells count coordinates of moore neighborhood 
     this.mooreNeighborhood = function (square) { //! terminology
         let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
@@ -129,19 +131,29 @@ function appRules () {
         let surrondingLifecells = 0;// amount of live cells surronding live cell #! better name
         
         for (let i = 0; i < neighborSquares.length; i++) { // time complexity n*m
+            isInlifeCells = false
             for (let j = 0; j < lifeCells.length; j++) {
                 if (lifeCells[j][0] == neighborSquares[i][0] && lifeCells[j][1] == neighborSquares[i][1]) {
-                    surrondingLifecells += 1;                  
+                    surrondingLifecells += 1;
+                    isInlifeCells = true           
                 }
+
             }
+            if (isInlifeCells==false){
+                
+                alldeadllsNeighbors.push(neighborSquares[i]) 
+            
+            }
+
         }
-        //console.log("x = ",surrondingLifecells)
+        console.log("alldeadllsNeighbors",alldeadllsNeighbors)
+
         return surrondingLifecells
     }
 
     this.PopOrStay = function (surrondingLifecells) { // #! suboptimal name
-        console.log(surrondingLifecells)
-        console.log((surrondingLifecells >= 2 && surrondingLifecells <= 3))
+        //nsole.log(surrondingLifecells)
+       //onsole.log((surrondingLifecells >= 2 && surrondingLifecells <= 3))
         return surrondingLifecells >= 2 && surrondingLifecells <= 3
     }
 
@@ -150,8 +162,11 @@ function appRules () {
         let neighborSquares = testappRules.mooreNeighborhood(square)
         let surrondingLifecells = testappRules.lifeCellsAround(lifeCells,neighborSquares)
 
+
+
         return testappRules.PopOrStay(surrondingLifecells)        
     }
+    
 }
 
 
@@ -161,7 +176,7 @@ let initialize = new initNullGen;
 
 // testing appRules
 let testappRules = new appRules;
-lifeCells = [[8,9],[9,9],[10,9]]
+lifeCells = [[9,8],[9,9],[9,10]]
 lifeCells = lifeCells.filter(testappRules.popDeadCells)
 console.log(lifeCells)
 
