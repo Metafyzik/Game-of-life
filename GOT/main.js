@@ -125,7 +125,8 @@ function appRules () {
         
         return neighborSquares    
     }
-    // count how many cells in moore neighborhood of (particular cells) and lifeCells are equal 
+    // count how many cells in moore neighborhood of (particular cells) and lifeCells are equal
+    // add all dead cell from moore neighborhood of a live cells 
     this.lifeCellsAround = function (lifeCells,neighborSquares) {
         
         let surrondingLifecells = 0;// amount of live cells surronding live cell #! better name
@@ -137,17 +138,13 @@ function appRules () {
                     surrondingLifecells += 1;
                     isInlifeCells = true           
                 }
-
             }
             if (isInlifeCells==false){
-                
+                // adding dead cell from moore neighborhood of a live cell
                 alldeadllsNeighbors.push(neighborSquares[i]) 
-            
             }
 
         }
-        console.log("alldeadllsNeighbors",alldeadllsNeighbors)
-
         return surrondingLifecells
     }
 
@@ -164,8 +161,41 @@ function appRules () {
 
 
 
-        return testappRules.PopOrStay(surrondingLifecells)        
+        return testappRules.PopOrStay(surrondingLifecells)
+
     }
+    this.pushBornCells = function () {
+        let newBornCells = [];
+        let numberTimesInArray = 0;
+
+        //console.log(alldeadllsNeighbors)
+
+        for (let i = 0; i < alldeadllsNeighbors.length; i++) { //n*n
+            for (let j = 0; j < alldeadllsNeighbors.length; j++) {
+                if ( JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(alldeadllsNeighbors[j]) ) {
+                    numberTimesInArray += 1;
+                    //console.log("numberTimesInArra",numberTimesInArray)
+                }
+            }
+
+            if (numberTimesInArray == 3) { // check three live neighbors
+                // check if cell is not already in NewBornCells
+                let isInNewBornCells = false
+                for (cell of newBornCells) {
+                    if ( JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(cell) ) {
+                        isInNewBornCells = true
+ 
+                    }
+                }
+                if (isInNewBornCells == false) {
+                newBornCells.push(alldeadllsNeighbors[i])  
+                }
+
+            }
+            numberTimesInArray = 0;
+        } 
+        console.log("newBornCells",newBornCells.sort())
+    }            
     
 }
 
@@ -179,6 +209,7 @@ let testappRules = new appRules;
 lifeCells = [[9,8],[9,9],[9,10]]
 lifeCells = lifeCells.filter(testappRules.popDeadCells)
 console.log(lifeCells)
+testappRules.pushBornCells()
 
 // listeners
 document.addEventListener("keydown", initialize.pressEnter) 
