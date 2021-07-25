@@ -36,7 +36,7 @@ drawGrid();
 // array containing life cells
 let lifeCells = [];
 let NewBornCells = []; 
-
+let runGame = false
 function initNullGen () {
         // cursor coordinates
         this.getCursorPosition = function  (canvas, event) {
@@ -90,7 +90,6 @@ function initNullGen () {
 
             rectangle(color, coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
         }
-
         // clicking into canvas
         this.mouseClick = function (canvas, e) {
             let coordinatesClick = this.getCursorPosition(canvas, e);
@@ -99,18 +98,16 @@ function initNullGen () {
             let isInlifeCells = this.checkCLick(coordinatesSquare);
             this.pushPopCell(isInlifeCells, coordinatesSquare);
             this.drawRedrawCell(isInlifeCells, coordinatesSquare);
-            
         }
-
         // pressing enter to start the game
         this.pressEnter = function (e) {
             if (e.keyCode === 13) {
-                console.log( "eneter has been pressed")  
+                console.log( "eneter has been pressed")
+                console.log( "lifeCells",lifeCells)
+                runGame = false  
             }
         }    
 }
-
-
 
 function appRules () {
     alldeadllsNeighbors = [] // duplicite values
@@ -160,8 +157,6 @@ function appRules () {
         let neighborSquares = testappRules.mooreNeighborhood(square)
         let surrondingLifecells = testappRules.lifeCellsAround(lifeCells,neighborSquares)
 
-
-
         return testappRules.PopOrStay(surrondingLifecells)
 
     }
@@ -173,7 +168,6 @@ function appRules () {
             for (let j = 0; j < alldeadllsNeighbors.length; j++) {
                 if ( JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(alldeadllsNeighbors[j]) ) {
                     numberTimesInArray += 1;
-                    //console.log("numberTimesInArra",numberTimesInArray)
                 }
             }
             if (numberTimesInArray == 3) { // check three live neighbors
@@ -196,24 +190,40 @@ function appRules () {
     
 }
 
+function Game () {
+    this.gameLoop = function () {
+            // listeners
+            canvas.addEventListener('mousedown',function (e) {
+                initialize.mouseClick(canvas, e); 
+            })    
 
+            document.addEventListener("keydown", initialize.pressEnter)
+            lifeCells = lifeCells.filter(testappRules.popDeadCells)
+            newBornCells = testappRules.newBornCells()
+            lifeCells = lifeCells.concat(newBornCells)
+
+    }
+}
 
 // testing initNullGen
 let initialize = new initNullGen;
 
 // testing appRules
 let testappRules = new appRules;
-lifeCells = [[9,8],[9,9],[9,10]]
+
 lifeCells = lifeCells.filter(testappRules.popDeadCells)
-
 newBornCells = testappRules.newBornCells()
-console.log(newBornCells)
-// listeners
-document.addEventListener("keydown", initialize.pressEnter) 
+lifeCells = lifeCells.concat(newBornCells)
 
-canvas.addEventListener('mousedown',function (e) {
-    initialize.mouseClick(canvas, e); 
-})    
+console.log(newBornCells)
+
+// testing Game
+let game = new Game;
+game.gameLoop();
+
+
+
+
 
 
 
