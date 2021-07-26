@@ -4,8 +4,8 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
 const tileSize = 15;
-const tileCountX = canvas.width / tileSize;
-const tileCountY = canvas.height / tileSize;
+const tileCountX = canvas.width = window.innerWidth;
+const tileCountY = canvas.height = window.innerHeight;
 
 
 // drawing functionality
@@ -189,7 +189,6 @@ function Game () {
             //redraw grid
             drawGrid();
             // draw live cells
-            console.log("new gen",lifeCells)
             for (cell of lifeCells) {
 
                 rectangle(cellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
