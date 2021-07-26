@@ -182,11 +182,8 @@ function Game () {
         if (e.keyCode === 13) { // enter press -> start generation cycle
             setInterval(function run() {
 
-            console.log("before filter",lifeCells)
             lifeCells = lifeCells.filter(testappRules.popDeadCells) //#! change name to survive
-            console.log("after filter",lifeCells)
             newBornCells = testappRules.newBornCells()
-            console.log("newBornCells",newBornCells)
             lifeCells = lifeCells.concat(newBornCells)
             
             //redraw grid
