@@ -41,3 +41,5 @@ k čemuž  převádění mezi číslem (number) a řetězce a naopak. Ale jak by
 - VYLEPŠENÍ: použítí JSON.stringify pro podmínky rovnosti mezi dvěmi poli. newBornCells zefektivnit, nebo alespoň zestručnit hledání 3 stejných polí pomocí prvně sort array. For of místo standardní for loop
 
 - testaaprules, abych mohl použít this
+
+- vytvořit instance třídy jako kontruktory Game třídy

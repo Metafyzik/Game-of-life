@@ -28,15 +28,6 @@ function drawGrid() {
     }
 }
 
-// drawing black background in size of the canvas 
-rectangle("black", 0, 0, canvas.width, canvas.height); 
-// white squares in to black canvas to create grid 
-drawGrid();
-
-// array containing life cells
-let lifeCells = [];
-let NewBornCells = []; 
-let runGame = false
 function initNullGen () {
         // cursor coordinates
         this.getCursorPosition = function  (canvas, event) {
@@ -99,14 +90,6 @@ function initNullGen () {
             this.pushPopCell(isInlifeCells, coordinatesSquare);
             this.drawRedrawCell(isInlifeCells, coordinatesSquare);
         }
-        // pressing enter to start the game
-        this.pressEnter = function (e) {
-            if (e.keyCode === 13) {
-                console.log( "eneter has been pressed")
-                console.log( "lifeCells",lifeCells)
-                runGame = false  
-            }
-        }    
 }
 
 function appRules () {
@@ -184,26 +167,52 @@ function appRules () {
 
             }
             numberTimesInArray = 0;
-        } 
+        }
+        alldeadllsNeighbors = []; // empty for next cycle 
         return newBornCells
     }            
     
 }
 
 function Game () {
-    this.gameLoop = function () {
-            // listeners
-            canvas.addEventListener('mousedown',function (e) {
-                initialize.mouseClick(canvas, e); 
-            })    
+        // pressing enter to start the game
+        let cellColor = "rgb(0,255,0)"
+    this.gameLoop = function (e) {
 
-            document.addEventListener("keydown", initialize.pressEnter)
-            lifeCells = lifeCells.filter(testappRules.popDeadCells)
+        if (e.keyCode === 13) { // enter press -> start generation cycle
+            setInterval(function run() {
+
+            console.log("before filter",lifeCells)
+            lifeCells = lifeCells.filter(testappRules.popDeadCells) //#! change name to survive
+            console.log("after filter",lifeCells)
             newBornCells = testappRules.newBornCells()
+            console.log("newBornCells",newBornCells)
             lifeCells = lifeCells.concat(newBornCells)
+            
+            //redraw grid
+            drawGrid();
+            // draw live cells
+            console.log("new gen",lifeCells)
+            for (cell of lifeCells) {
 
+                rectangle(cellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+            }  
+            }, 1000);
+            
+        }
     }
 }
+
+
+// drawing black background in size of the canvas 
+rectangle("black", 0, 0, canvas.width, canvas.height); 
+// white squares in to black canvas to create grid 
+drawGrid();
+
+// array containing life cells
+let lifeCells = [];
+let NewBornCells = []; 
+let runGame = false
 
 // testing initNullGen
 let initialize = new initNullGen;
@@ -215,11 +224,15 @@ lifeCells = lifeCells.filter(testappRules.popDeadCells)
 newBornCells = testappRules.newBornCells()
 lifeCells = lifeCells.concat(newBornCells)
 
-console.log(newBornCells)
-
 // testing Game
 let game = new Game;
-game.gameLoop();
+
+// event listeners
+canvas.addEventListener('mousedown',function (e) {
+    initialize.mouseClick(canvas, e); 
+})    
+
+document.addEventListener("keydown", game.gameLoop)
 
 
 
