@@ -82,7 +82,7 @@ function initNullGen () {
             rectangle(color, coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
         }
         // clicking into canvas
-        this.mouseClick = function (canvas, e) {
+        this.addLiveCells = function (canvas, e) {
             let coordinatesClick = this.getCursorPosition(canvas, e);
             let coordinatesSquare = this.clickedSquare(coordinatesClick);
         
@@ -178,10 +178,10 @@ function Game () {
         let surviveCells = []; //#!
 
     this.gameLoop = e => {
-        clickingAlowed = false
         if (e.keyCode === 13) { // enter press -> start generation cycle
-
-
+            // prevent clicking new cell after start
+            canvas.removeEventListener('mousedown',ClickCanvas)
+            
             setInterval(function run() {
 
             //redraw previous generaton
@@ -226,14 +226,12 @@ lifeCells = lifeCells.concat(newBornCells)
 // testing Game
 let game = new Game;
 
-let clickingAlowed = true //!# testing
 // event listeners
-canvas.addEventListener('mousedown',e => {
-    if (clickingAlowed == true) {
-        initialize.mouseClick(canvas, e);     
-    } 
+canvas.addEventListener('mousedown',ClickCanvas)
 
-})    
+function ClickCanvas(e) {
+    initialize.addLiveCells(canvas, e);     
+}
 
 document.addEventListener("keydown", game.gameLoop)
 
