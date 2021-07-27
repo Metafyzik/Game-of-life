@@ -18,7 +18,7 @@ function drawGrid() {
     for (let i = 0; i < tileCountX; i++) {
         for (let j = 0; j < tileCountY; j++) {
             rectangle(
-                "white",
+                "black",
                 tileSize * i,
                 tileSize * j,
                 tileSize - 1,
@@ -76,7 +76,7 @@ function initNullGen () {
             if (isInlifeCells == false) {
                 color = "rgb(0,255,0)"
             } else {
-                color = "white"
+                color = "black"
             }
 
             rectangle(color, coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
@@ -175,23 +175,25 @@ function appRules () {
 }
 
 function Game () {
-        // pressing enter to start the game
-        let cellColor = "rgb(0,255,0)"
+        let liveCellColor = "rgb(0,255,0)"
+        let canvasColor = "rgb(0,0,0)"
     this.gameLoop = function (e) {
 
         if (e.keyCode === 13) { // enter press -> start generation cycle
             setInterval(function run() {
 
+            //redraw squares
+            for (cell of lifeCells) {
+                rectangle(canvasColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+            }  
+                
             lifeCells = lifeCells.filter(testappRules.popDeadCells) //#! change name to survive
             newBornCells = testappRules.newBornCells()
             lifeCells = lifeCells.concat(newBornCells)
             
-            //redraw grid
-            drawGrid();
             // draw live cells
             for (cell of lifeCells) {
-
-                rectangle(cellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+                rectangle(liveCellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
             }  
             }, 1000);
             
@@ -201,7 +203,7 @@ function Game () {
 
 
 // drawing black background in size of the canvas 
-rectangle("black", 0, 0, canvas.width, canvas.height); 
+rectangle("green", 0, 0, canvas.width, canvas.height); 
 // white squares in to black canvas to create grid 
 drawGrid();
 
