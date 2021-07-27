@@ -1,13 +1,4 @@
 
-// canvas
-const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d");
-
-const tileSize = 15;
-const tileCountX = canvas.width = window.innerWidth;
-const tileCountY = canvas.height = window.innerHeight;
-
-
 // drawing functionality
 function rectangle(color, x, y, width, height) {
     ctx.fillStyle = color;
@@ -175,7 +166,9 @@ function appRules () {
 function Game () {
         let liveCellColor = "rgb(0,255,0)";
         let canvasColor = "rgb(0,0,0)";
-        let surviveCells = []; //#!
+        let surviveCells = []; 
+        let NewBornCells = [];
+        let delay = 1000;
 
     this.gameLoop = e => {
         if (e.keyCode === 13) { // enter press -> start generation cycle
@@ -183,45 +176,43 @@ function Game () {
             canvas.removeEventListener('mousedown',ClickCanvas)
             
             setInterval(function run() {
+                //redraw previous generaton
+                for (cell of lifeCells) {
+                    rectangle(canvasColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+                }
 
-            //redraw previous generaton
-            for (cell of lifeCells) {
-                rectangle(canvasColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
-            }
-
-            lifeCells = lifeCells.filter(testappRules.popDeadCells); //#! change name to survive
-            newBornCells = testappRules.newBornCells();
-            lifeCells = lifeCells.concat(newBornCells);
-            
-            // draw new generation
-            for (cell of lifeCells) {
-                rectangle(liveCellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
-            }
-            }, 1000);
+                surviveCells = lifeCells.filter(testappRules.popDeadCells); //#! change name to survive
+                newBornCells = testappRules.newBornCells();
+                lifeCells = surviveCells.concat(newBornCells);
+                
+                // draw new generation
+                for (cell of lifeCells) {
+                    rectangle(liveCellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+                }
+            }, delay);
             
         }
     }
 }
 
+// canvas
+const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
 
-// drawing black background in size of the canvas 
+const tileSize = 15;
+const tileCountX = canvas.width = window.innerWidth;
+const tileCountY = canvas.height = window.innerHeight;
+
+// drawing green background in size of the canvas 
 rectangle("green", 0, 0, canvas.width, canvas.height); 
 // white squares in to black canvas to create grid 
 drawGrid();
-
 // array containing life cells
 let lifeCells = [];
-let NewBornCells = []; 
 
 // testing initNullGen
 let initialize = new initNullGen;
-
-// testing appRules
 let testappRules = new appRules;
-
-lifeCells = lifeCells.filter(testappRules.popDeadCells)
-newBornCells = testappRules.newBornCells()
-lifeCells = lifeCells.concat(newBornCells)
 
 // testing Game
 let game = new Game;
