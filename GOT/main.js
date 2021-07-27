@@ -20,7 +20,6 @@ function drawGrid() {
 }
 
 function initNullGen () {
-        // cursor coordinates
         this.getCursorPosition = function  (canvas, event) {
             const rect = canvas.getBoundingClientRect() //#! how does it work?
             const x = event.clientX - rect.left; //#! how does it work?
@@ -28,7 +27,6 @@ function initNullGen () {
     
             return [x,y]
         }
-    
         // coordinates of sqaure that is clicked into
         this.clickedSquare = function (coordinates) {
             row = Math.floor( coordinates[0] / tileSize );
@@ -36,22 +34,18 @@ function initNullGen () {
             
             return [row ,column]
         }
-
         // check if clicked square is in lifeCells
         this.checkCLick = function (coordinatesSquare) { 
             let isInlifeCells = false
 
-            if (lifeCells.length > 0) { // for case of empty lifeCells //#! if this special condition is nedeed
+            lifeCells.forEach(square => { 
+                if (JSON.stringify(square) == JSON.stringify(coordinatesSquare)) {
+                    isInlifeCells = true;
+                }   
+            })
 
-                lifeCells.forEach(square => { 
-                    if (square[0] == coordinatesSquare[0] && square[1] == coordinatesSquare[1]) {
-                        isInlifeCells = true;
-                    }   
-                })
-            }
             return isInlifeCells;
         }
-
         // push or pop cell from lifeCells
         this.pushPopCell = function (isInlifeCells, coordinatesSquare) {           
             if (isInlifeCells == false) {
@@ -60,7 +54,6 @@ function initNullGen () {
                 lifeCells.pop(coordinatesSquare)
             }
         }
-
         // draw new cell or redraw poped cell back to canvas color 
         this.drawRedrawCell = function (isInlifeCells, coordinatesSquare) {
             let color;
@@ -84,15 +77,14 @@ function initNullGen () {
 }
 
 function appRules () {
-    alldeadllsNeighbors = [] // duplicite values
-
+    alldeadllsNeighbors = []
     // for every cells count coordinates of moore neighborhood 
     this.mooreNeighborhood = function (square) { //! terminology
         let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
 
-        for (let i = 0; i < neighborSquares.length; i++) {
-            neighborSquares[i][0] += square[0];
-            neighborSquares[i][1] += square[1];
+        for (neighborSquare of neighborSquares) {
+            neighborSquare[0] += square[0];
+            neighborSquare[1] += square[1];
         }
         
         return neighborSquares    
@@ -102,20 +94,19 @@ function appRules () {
     this.lifeCellsAround = function (lifeCells,neighborSquares) {
         
         let surrondingLifecells = 0;// amount of live cells surronding live cell #! better name
-        
-        for (let i = 0; i < neighborSquares.length; i++) { // time complexity n*m
+            
+        for (neighorSquare of neighborSquares) { // time complexity n*m
             isInlifeCells = false
-            for (let j = 0; j < lifeCells.length; j++) {
-                if (lifeCells[j][0] == neighborSquares[i][0] && lifeCells[j][1] == neighborSquares[i][1]) {
+            for (lifeCell of lifeCells) {
+                if (JSON.stringify(lifeCell) == JSON.stringify(neighorSquare)) {
                     surrondingLifecells += 1;
                     isInlifeCells = true           
                 }
             }
             if (isInlifeCells==false){
                 // adding dead cell from moore neighborhood of a live cell
-                alldeadllsNeighbors.push(neighborSquares[i]) 
+                alldeadllsNeighbors.push(neighorSquare) 
             }
-
         }
         return surrondingLifecells
     }
@@ -125,7 +116,6 @@ function appRules () {
     }
 
     this.popDeadCells = function (square) {
-        //console.log(square)
         let neighborSquares = testappRules.mooreNeighborhood(square)
         let surrondingLifecells = testappRules.lifeCellsAround(lifeCells,neighborSquares)
 
@@ -157,7 +147,7 @@ function appRules () {
             }
             numberTimesInArray = 0;
         }
-        alldeadllsNeighbors = []; // empty for next cycle 
+        alldeadllsNeighbors = []; // empty for next generation 
         return newBornCells
     }            
     
