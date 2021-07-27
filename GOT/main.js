@@ -177,9 +177,11 @@ function Game () {
         let canvasColor = "rgb(0,0,0)";
         let surviveCells = []; //#!
 
-    this.gameLoop = function (e) {
-
+    this.gameLoop = e => {
+        clickingAlowed = false
         if (e.keyCode === 13) { // enter press -> start generation cycle
+
+
             setInterval(function run() {
 
             //redraw previous generaton
@@ -224,9 +226,13 @@ lifeCells = lifeCells.concat(newBornCells)
 // testing Game
 let game = new Game;
 
+let clickingAlowed = true //!# testing
 // event listeners
-canvas.addEventListener('mousedown',function (e) {
-    initialize.mouseClick(canvas, e); 
+canvas.addEventListener('mousedown',e => {
+    if (clickingAlowed == true) {
+        initialize.mouseClick(canvas, e);     
+    } 
+
 })    
 
 document.addEventListener("keydown", game.gameLoop)
