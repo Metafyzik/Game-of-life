@@ -70,7 +70,7 @@ function initNullGen () {
             }
         }
 
-        // draw new cell or redraw poped cell back to white 
+        // draw new cell or redraw poped cell back to canvas color 
         this.drawRedrawCell = function (isInlifeCells, coordinatesSquare) {
             let color;
             if (isInlifeCells == false) {
@@ -130,8 +130,6 @@ function appRules () {
     }
 
     this.PopOrStay = function (surrondingLifecells) { // #! suboptimal name
-        //nsole.log(surrondingLifecells)
-       //onsole.log((surrondingLifecells >= 2 && surrondingLifecells <= 3))
         return surrondingLifecells >= 2 && surrondingLifecells <= 3
     }
 
@@ -157,7 +155,7 @@ function appRules () {
                 // check if cell is not already in NewBornCells
                 let isInNewBornCells = false
                 for (cell of newBornCells) {
-                    if ( JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(cell) ) {
+                    if (JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(cell)) {
                         isInNewBornCells = true
                     }
                 }
@@ -177,7 +175,8 @@ function appRules () {
 function Game () {
         let liveCellColor = "rgb(0,255,0)";
         let canvasColor = "rgb(0,0,0)";
-        let surviveCells = [];
+        let surviveCells = []; //#!
+
     this.gameLoop = function (e) {
 
         if (e.keyCode === 13) { // enter press -> start generation cycle
@@ -187,7 +186,7 @@ function Game () {
             for (cell of lifeCells) {
                 rectangle(canvasColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
             }
-                
+
             lifeCells = lifeCells.filter(testappRules.popDeadCells); //#! change name to survive
             newBornCells = testappRules.newBornCells();
             lifeCells = lifeCells.concat(newBornCells);
