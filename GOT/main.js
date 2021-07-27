@@ -158,7 +158,7 @@ function Game () {
         let canvasColor = "rgb(0,0,0)";
         let surviveCells = []; 
         let NewBornCells = [];
-        let delay = 1000;
+        let interval = 1000;
 
     this.gameLoop = e => {
         if (e.keyCode === 13) { // enter press -> start generation cycle
@@ -179,7 +179,7 @@ function Game () {
                 for (cell of lifeCells) {
                     rectangle(liveCellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
                 }
-            }, delay);
+            }, interval);
             
         }
     }
@@ -199,13 +199,11 @@ rectangle("green", 0, 0, canvas.width, canvas.height);
 // white squares in to black canvas to create grid 
 drawGrid();
 // array containing life cells
-let lifeCells = []; //#! Why not use object {x:number,y: number}
+let lifeCells = []; //#! Why not use object {x:number,y: number}, rename to liveCells
 
-// testing initNullGen
+//! name and place of creating instances
 let initialize = new initNullGen;
-let testappRules = new appRules; //! name and place of creating instances
-
-// testing Game
+let testappRules = new appRules; 
 let game = new Game;
 
 // event listeners
