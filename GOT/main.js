@@ -175,26 +175,27 @@ function appRules () {
 }
 
 function Game () {
-        let liveCellColor = "rgb(0,255,0)"
-        let canvasColor = "rgb(0,0,0)"
+        let liveCellColor = "rgb(0,255,0)";
+        let canvasColor = "rgb(0,0,0)";
+        let surviveCells = [];
     this.gameLoop = function (e) {
 
         if (e.keyCode === 13) { // enter press -> start generation cycle
             setInterval(function run() {
 
-            //redraw squares
+            //redraw previous generaton
             for (cell of lifeCells) {
                 rectangle(canvasColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
-            }  
+            }
                 
-            lifeCells = lifeCells.filter(testappRules.popDeadCells) //#! change name to survive
-            newBornCells = testappRules.newBornCells()
-            lifeCells = lifeCells.concat(newBornCells)
+            lifeCells = lifeCells.filter(testappRules.popDeadCells); //#! change name to survive
+            newBornCells = testappRules.newBornCells();
+            lifeCells = lifeCells.concat(newBornCells);
             
-            // draw live cells
+            // draw new generation
             for (cell of lifeCells) {
                 rectangle(liveCellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
-            }  
+            }
             }, 1000);
             
         }
@@ -210,7 +211,6 @@ drawGrid();
 // array containing life cells
 let lifeCells = [];
 let NewBornCells = []; 
-let runGame = false
 
 // testing initNullGen
 let initialize = new initNullGen;
