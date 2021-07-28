@@ -43,7 +43,6 @@ function initNullGen () {
                 isInlifeCells = true;
             }   
         })
-
         return isInlifeCells;
     }
     // push or pop cell from lifeCells
@@ -124,11 +123,11 @@ function appRules () {
     }
     this.newBornCells = function () {
         let newBornCells = [];
-        let numberTimesInArray = 0;
 
         for (let i = 0; i < alldeadllsNeighbors.length; i++) { //n*n
+            numberTimesInArray = 0;
             for (let j = 0; j < alldeadllsNeighbors.length; j++) {
-                if ( JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(alldeadllsNeighbors[j]) ) {
+                if (JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(alldeadllsNeighbors[j])) {
                     numberTimesInArray += 1;
                 }
             }
@@ -143,14 +142,11 @@ function appRules () {
                 if (isInNewBornCells == false) {
                 newBornCells.push(alldeadllsNeighbors[i])  
                 }
-
             }
-            numberTimesInArray = 0;
         }
         alldeadllsNeighbors = []; // empty for next generation 
         return newBornCells
-    }            
-    
+    }               
 }
 
 function Game () {
