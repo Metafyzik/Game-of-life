@@ -123,28 +123,25 @@ function appRules () {
     }
     this.newBornCells = function () {
         let newBornCells = [];
+        let inArray = 0;
+        let a = null;
+        alldeadllsNeighbors.sort()
 
-        for (let i = 0; i < alldeadllsNeighbors.length; i++) { //n*n
-            numberTimesInArray = 0;
-            for (let j = 0; j < alldeadllsNeighbors.length; j++) {
-                if (JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(alldeadllsNeighbors[j])) {
-                    numberTimesInArray += 1;
-                }
-            }
-            if (numberTimesInArray == 3) { // check three live neighbors
-                // check if cell is not already in NewBornCells
-                let isInNewBornCells = false
-                for (cell of newBornCells) {
-                    if (JSON.stringify(alldeadllsNeighbors[i]) == JSON.stringify(cell)) {
-                        isInNewBornCells = true
-                    }
-                }
-                if (isInNewBornCells == false) {
-                newBornCells.push(alldeadllsNeighbors[i])  
-                }
+        for (deadCell of alldeadllsNeighbors) {
+            if (a == null) {
+              a = deadCell
+            } else if (JSON.stringify(a) == JSON.stringify(deadCell)) {
+              inArray += 1;
+              a = deadCell 
+            } else {
+              if (inArray == 2) {newBornCells.push(a);}                
+              a = deadCell; 
+              inArray = 0;   
             }
         }
-        alldeadllsNeighbors = []; // empty for next generation 
+        // end of loop
+        if (inArray == 2) {newBornCells.push(deadCell)}
+        alldeadllsNeighbors = []; //empty for next generation
         return newBornCells
     }               
 }
@@ -167,7 +164,7 @@ function Game () {
                     rectangle(canvasColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
                 }
 
-                surviveCells = lifeCells.filter(testappRules.popDeadCells); //#! change name to survive
+                surviveCells = lifeCells.filter(testappRules.popDeadCells);
                 newBornCells = testappRules.newBornCells();
                 lifeCells = surviveCells.concat(newBornCells);
                 
