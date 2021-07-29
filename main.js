@@ -1,15 +1,14 @@
-
 // drawing functionality
 function rectangle(color, x, y, width, height) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
 }
 
-function drawGrid() {
+function drawGrid(color) {
     for (let i = 0; i < tileCountX; i++) {
         for (let j = 0; j < tileCountY; j++) {
             rectangle(
-                "black",
+                color,
                 tileSize * i,
                 tileSize * j,
                 tileSize - 1,
@@ -57,9 +56,9 @@ function initNullGen () {
     this.drawRedrawCell = function (isInlifeCells, coordinatesSquare) {
         let color;
         if (isInlifeCells == false) {
-            color = "rgb(0,255,0)"
+            color = colorCell
         } else {
-            color = "black"
+            color = colorCanvas
         }
 
         rectangle(color, coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
@@ -125,14 +124,14 @@ function appRules () {
         let newBornCells = [];
         let inArray = 0;
         let a = null;
-        alldeadllsNeighbors.sort()
+        alldeadllsNeighbors.sort();
 
         for (deadCell of alldeadllsNeighbors) {
             if (a == null) {
-              a = deadCell
+              a = deadCell;
             } else if (JSON.stringify(a) == JSON.stringify(deadCell)) {
               inArray += 1;
-              a = deadCell 
+              a = deadCell; 
             } else {
               if (inArray == 2) {newBornCells.push(a);}                
               a = deadCell; 
@@ -147,8 +146,6 @@ function appRules () {
 }
 
 function Game () {
-    let liveCellColor = "rgb(0,255,0)";
-    let canvasColor = "rgb(0,0,0)";
     let surviveCells = []; 
     let NewBornCells = [];
     let interval = 1000;
@@ -161,7 +158,7 @@ function Game () {
             setInterval(function run() {
                 //redraw previous generaton
                 for (cell of lifeCells) {
-                    rectangle(canvasColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+                    rectangle(colorCanvas, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
                 }
 
                 surviveCells = lifeCells.filter(testappRules.popDeadCells);
@@ -170,13 +167,31 @@ function Game () {
                 
                 // draw new generation
                 for (cell of lifeCells) {
-                    rectangle(liveCellColor, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+                    rectangle(colorCell, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
                 }
             }, interval);
             
         }
     }
 }
+
+// Get the modal
+var modal = document.getElementById("myModal");
+// When the user clicks on <span> (x), close the modal
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
 
 //#! make global variables out of color so that changing it need only one variable
 // canvas
@@ -187,27 +202,27 @@ const tileSize = 15;
 const tileCountX = canvas.width = window.innerWidth;
 const tileCountY = canvas.height = window.innerHeight;
 
+const colorCanvas = "rgb(0,0,0)"
+const colorCell = "rgb(0,255,0)"
 // drawing green background in size of the canvas 
-rectangle("green", 0, 0, canvas.width, canvas.height); 
+rectangle(colorCell, 0, 0, canvas.width, canvas.height); 
 // white squares in to black canvas to create grid 
-drawGrid();
+drawGrid(colorCanvas);
 // array containing life cells
 let lifeCells = []; //#! Why not use object {x:number,y: number}, rename to liveCells
 
-//! name and place of creating instances
+//! name and place of creating instances,
 let initialize = new initNullGen;
 let testappRules = new appRules; 
 let game = new Game;
 
 // event listeners
 canvas.addEventListener('mousedown',ClickCanvas)
+document.addEventListener("keydown", game.gameLoop)
 
 function ClickCanvas(e) {
     initialize.addLiveCells(canvas, e);     
 }
-
-document.addEventListener("keydown", game.gameLoop)
-
 
 
 
