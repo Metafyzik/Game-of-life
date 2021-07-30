@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+      
+<head>
+    <meta charset="UTF-8">
+    <title>
+        testing array function
+    </title>
+</head>
+  
+<body>
+
+  
+    <script type="text/javascript">
+    let array = [[4,1],[1,2],[1,2],[1,2],[1,3],[1,3],[1,3],[4,4],[4,4],[4,4],[1,5],[2,3],[2,3],[2,3],[2,5],[3,3],[5,3],[5,3],[5,3],[5,3]];
+
+    let haveThreeInArray = [];
+    let a = null;
+    let b = null;
+    let inArray = 0;
+
+    array.sort()
+    //console.log(array, typeof array)
+
+    for (deadCell of alldeadllsNeighbors) {
+        if (a == null) {
+          a = deadCell
+        } else if (JSON.stringify(a) == JSON.stringify(deadCell)) {
+          inArray += 1;
+          a = deadCell 
+        } else {
+          if (inArray == 2) {
+            haveThreeInArray.push(a);
+          }
+          a = deadCell 
+          inArray = 0;   
+        }
+    }
+    // end of loop
+    if (inArray == 2) {
+        haveThreeInArray.push(deadCell);
+    }
+    console.log(a)
+    console.log(inArray)
+
+    console.log(haveThreeInArray)
+        
+    </script>
+</body>
+  
+</html>

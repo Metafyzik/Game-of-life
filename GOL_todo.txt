@@ -1,0 +1,17 @@
+- přidat poznámu v css #contain, že se jedná o canvas
+
+- lifeCellsAround jak zjistit, kolik stejných souřadnic [x,y] sdílí neighborSquares a lifeCells (aplikace tří prvních pravidel)
+
+- jak volat z metody popDeadCells ostatní metody dané třídy a jestli to tak mouhu implementovat a jestli je to vhodné
+
+
+
+
+
+
+
+
+
+
+____________________________________________________
++ je main dobré jméno pro hlavní css soubor?

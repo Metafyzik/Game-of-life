@@ -1,0 +1,47 @@
+- CO dělám (resp. co se snažím udělat)?
+Pracuji na inicializaci nulté generace, která se získá uživatelova vstupu. 
+Naklikané čtverečky (x,y souřadnice) se ukládají do proměnné lifeCells. Chci, aby kliknutí na už obasazený čtvereček vedlo k jeho vymazání z lifeCells. 
+Jinými slovy potřebuji zjistit, jestli je dané souřadnice v lifeCells a jestli ne, tak přidat do lifeCells, jestli ano, tak vymazat z lifeCells. Nyní přemýšlím,
+jaký typ proměnné použít pro Lifecells, jak zjistit, zda je se tak souřadnice čtvrečku nachází.
+
+
+-Přichází další otázka. Jak udělat vykreslování. a) 1. překreslit na bílo; 2. vykreslit všechny čtverečky z Lifecells (forEach)
+Při inicializaci stačí jen kreslit zelené a "vyřazené" čtverečky zpětně překreslit na bílé.
+
+- Pro lifeCells jsem použil datový typ array, což může vést k tomu, že budu mít po použití metody pop mezery (gaps) v daném array, a to může vést k problémům.
+
+- Potřeba změnit nikoliv funkcionalitu (funguje je to tak jak má), ale "místo", kde funcionalita probíhá. Přídání, sebrání z lifeCells, nakreslení překreslení
+dát do samostatné funkce. Tím ale vyvstává otázka, jak to udělat OO (objektově). 
+Mám to udělat jako samostanou třídu, mám to udělat jako funkci třídy zahrnující celou inicializaci nulté generace.
+
+
+- Dělat v CheckClick kontrolu a zároveň, kreslení je blbost one function one purpose
+
+- udělat ze lifeCells atribut initNullGen, nebo nechat jako globální proměnnou?
+
+- dát drawRect a drawGrid do je rectangle to třídy
+
+appRules: aplikuje na 4. pravidla hry na stávající generaci k získání nové generace. 
+Jinými slovy, přidává, nebo ubírá prvky z lifeCells
+
+
+- neghborSquares mám definovat jako proměnnou metody, nebo jako atribut třídy?
+
+- občas příjít vhodným názvem objektu je někdy obzvláště těžké
+
+- stejně jako initNullGen mám potřebuje zase udělt metodu jejíž práce bude volat ostatní nadefinované metody danné třídy. Je to "správně", dobrá prace? Neměl bych metody (třídy) volat mimo třídy?
+- použít filter 
+
+- Otázka potřebuji samostanou metodu na zjistění podmínky vyřadit či nechat?
+
+- Hacky way: jak držet hodnoty souřadnic čtverců jako datový typ string místo array. [0,0] -> "0 0". To znamená, že mohu použít udržovat živé bunky jako řetězce v množině (set), místo array v array, čímž odpadává
+problém vyhodnocování dvou stejných polí v Javascriptu. Na druhou stranu vysvtává problém zakódování souřadnic a "roz"kódování souřadnic. Mimojiné získat pozici x, y čtverce pro vykreslení v metodě drawSquare, 
+k čemuž  převádění mezi číslem (number) a řetězce a naopak. Ale jak by mi pomohlo
+
+- VYLEPŠENÍ: použítí JSON.stringify pro podmínky rovnosti mezi dvěmi poli. newBornCells zefektivnit, nebo alespoň zestručnit hledání 3 stejných polí pomocí prvně sort array. For of místo standardní for loop
+
+- testaaprules, abych mohl použít this
+
+- vytvořit instance třídy jako kontruktory Game třídy
+
+- "práce" s alldeadllsNeighbors polem je poněkud matoucí

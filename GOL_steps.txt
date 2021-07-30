@@ -1,0 +1,5 @@
+1. vytvořit si prostředí (git init)
+2. vytvořit html (zkontrolovat)
+3. vytvořit javascript soubor a jeho importování do index.html (zkontrolovat console.lgo)
+4. Canvas (viz git commits)
+
