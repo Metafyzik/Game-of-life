@@ -74,10 +74,10 @@ const initNullGen = {
     },
 }
 
-function appRules () {
-    alldeadllsNeighbors = []
+const appRules = {
+    alldeadllsNeighbors : [],
     // for every cells count coordinates of moore neighborhood 
-    this.mooreNeighborhood = function (square) { //! terminology
+    mooreNeighborhood : function(square) { //! terminology
         let neighborSquares = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]; //#! 
 
         for (neighborSquare of neighborSquares) {
@@ -86,10 +86,10 @@ function appRules () {
         }
         
         return neighborSquares    
-    }
+    },
     // count how many cells in moore neighborhood of (particular cells) and lifeCells are equal
     // add all dead cell from moore neighborhood of a live cells 
-    this.lifeCellsAround = function (lifeCells,neighborSquares) { //#! try to change name of method to refcted the ectended functionalit fo that method
+    lifeCellsAround : function (lifeCells,neighborSquares) { //#! try to change name of method to refcted the ectended functionalit fo that method
         
         let surrondingLifecells = 0;// amount of live cells surronding live cell #! better name
             
@@ -103,30 +103,31 @@ function appRules () {
             }
             if (isInlifeCells==false){
                 // adding dead cell from moore neighborhood of a live cell
-                alldeadllsNeighbors.push(neighorSquare) 
+                this.alldeadllsNeighbors.push(neighorSquare); 
             }
         }
         return surrondingLifecells
-    }
+    },
 
-    this.PopOrStay = function (surrondingLifecells) { // #! suboptimal name
-        return surrondingLifecells >= 2 && surrondingLifecells <= 3
-    }
+    PopOrStay : function (surrondingLifecells) { // #! suboptimal name
+        return surrondingLifecells >= 2 && surrondingLifecells <= 3;
+    },
 
-    this.popDeadCells = function (square) {
-        let neighborSquares = testappRules.mooreNeighborhood(square)
-        let surrondingLifecells = testappRules.lifeCellsAround(lifeCells,neighborSquares)
+    popDeadCells : function (square) {
+        
+        let neighborSquares = appRules.mooreNeighborhood(square);
+        let surrondingLifecells = appRules.lifeCellsAround(lifeCells,neighborSquares);
 
-        return testappRules.PopOrStay(surrondingLifecells)
+        return appRules.PopOrStay(surrondingLifecells)
 
-    }
-    this.newBornCells = function () {
+    },
+    newBornCells : function () {
         let newBornCells = [];
         let inArray = 0;
         let a = null;
-        alldeadllsNeighbors.sort();
+        this.alldeadllsNeighbors.sort();
 
-        for (deadCell of alldeadllsNeighbors) {
+        for (deadCell of this.alldeadllsNeighbors) {
             if (a == null) {
               a = deadCell;
             } else if (JSON.stringify(a) == JSON.stringify(deadCell)) {
@@ -140,18 +141,18 @@ function appRules () {
         }
         // end of loop
         if (inArray == 2) {newBornCells.push(deadCell)}
-        alldeadllsNeighbors = []; //empty for next generation
+        this.alldeadllsNeighbors = []; //empty for next generation
         return newBornCells
     }               
 }
 
-function Game () {
-    let surviveCells = []; 
-    let NewBornCells = []; //!
-    let interval = 1000;
+const Game = {
+    surviveCells : [], 
+    NewBornCells : [], //!
+    interval : 1000,
 
-    this.gameLoop = e => {
-        if (e.keyCode === 13) { // enter press -> start generation cycle
+    gameLoop : function () {
+        if (true) { // enter press -> start generation cycle
             // prevent clicking new cell after start
             canvas.removeEventListener('mousedown',ClickCanvas)
             
@@ -161,15 +162,15 @@ function Game () {
                     rectangle(colorCanvas, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
                 }
 
-                surviveCells = lifeCells.filter(testappRules.popDeadCells);
-                newBornCells = testappRules.newBornCells();
+                this.surviveCells = lifeCells.filter(appRules.popDeadCells);
+                this.newBornCells = appRules.newBornCells();
                 lifeCells = surviveCells.concat(newBornCells);
                 
                 // draw new generation
                 for (cell of lifeCells) {
                     rectangle(colorCell, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
                 }
-            }, interval);
+            }, this.interval);
             
         }
     }
@@ -212,20 +213,23 @@ drawGrid(colorCanvas);
 let lifeCells = []; //#! Why not use object {x:number,y: number}, rename to liveCells
 
 //! name and place of creating instances,
-let initialize = new initNullGen;
+/* let initialize = new initNullGen;
 let testappRules = new appRules; 
-let game = new Game;
+let game = new Game; */
 
 // event listeners
-canvas.addEventListener('mousedown',ClickCanvas)
-document.addEventListener("keydown", game.gameLoop)
+canvas.addEventListener('mousedown',ClickCanvas);
+
+document.addEventListener("keydown", (e) => {
+    if (e.keyCode === 13) { Game.gameLoop()}
+})
 
 function ClickCanvas(e) {
-    initialize.addLiveCells(canvas, e);     
+    initNullGen.addLiveCells(canvas, e);     
 }
 
 
-
+//if (e.keyCode === 13)
 
 
 
