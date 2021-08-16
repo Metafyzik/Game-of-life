@@ -212,16 +212,11 @@ drawGrid(colorCanvas);
 // array containing life cells
 let lifeCells = []; //#! Why not use object {x:number,y: number}, rename to liveCells
 
-//! name and place of creating instances,
-/* let initialize = new initNullGen;
-let testappRules = new appRules; 
-let game = new Game; */
-
 // event listeners
 canvas.addEventListener('mousedown',ClickCanvas);
 
 document.addEventListener("keydown", (e) => {
-    if (e.keyCode === 13) { Game.gameLoop()}
+    if (e.keyCode === 13) { Game.gameLoop() }
 })
 
 function ClickCanvas(e) {
