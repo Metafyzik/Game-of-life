@@ -18,23 +18,23 @@ function drawGrid(color) {
     }
 }
 
-function initNullGen () {
-    this.getCursorPosition = function  (canvas, event) {
+const initNullGen = {
+    getCursorPosition : function  (canvas, event) {
         const rect = canvas.getBoundingClientRect() //#! how does it work?
         const x = event.clientX - rect.left; //#! how does it work?
         const y = event.clientY - rect.top; //#! how does it work?
 
         return [x,y]
-    }
+    },
     // coordinates of sqaure that is clicked into
-    this.clickedSquare = function (coordinates) {
+    clickedSquare : function (coordinates) {
         row = Math.floor( coordinates[0] / tileSize );
         column = Math.floor( coordinates[1]  / tileSize );
         
         return [row ,column]
-    }
+    },
     // check if clicked square is in lifeCells
-    this.checkCLick = function (coordinatesSquare) { 
+    checkCLick : function (coordinatesSquare) { 
         let isInlifeCells = false
 
         lifeCells.forEach(square => { 
@@ -43,17 +43,17 @@ function initNullGen () {
             }   
         })
         return isInlifeCells;
-    }
+    },
     // push or pop cell from lifeCells
-    this.pushPopCell = function (isInlifeCells, coordinatesSquare) {           
+    pushPopCell : function (isInlifeCells, coordinatesSquare) {           
         if (isInlifeCells == false) {
             lifeCells.push(coordinatesSquare)
         } else {
             lifeCells.pop(coordinatesSquare)
         }
-    }
+    },
     // draw new cell or redraw poped cell back to canvas color 
-    this.drawRedrawCell = function (isInlifeCells, coordinatesSquare) {
+    drawRedrawCell : function (isInlifeCells, coordinatesSquare) {
         let color;
         if (isInlifeCells == false) {
             color = colorCell
@@ -62,16 +62,16 @@ function initNullGen () {
         }
 
         rectangle(color, coordinatesSquare[0]*tileSize, coordinatesSquare[1]*tileSize, tileSize - 1, tileSize - 1); 
-    }
+    },
     // clicking into canvas
-    this.addLiveCells = function (canvas, e) { //#! Name is bad because doesnt express that it also poping and I alread have pushPopCell as a method so I need to make more sophisticated changes
+    addLiveCells : function (canvas, e) { //#! Name is bad because doesnt express that it also poping and I alread have pushPopCell as a method so I need to make more sophisticated changes
         let coordinatesClick = this.getCursorPosition(canvas, e);
         let coordinatesSquare = this.clickedSquare(coordinatesClick);
     
         let isInlifeCells = this.checkCLick(coordinatesSquare);
         this.pushPopCell(isInlifeCells, coordinatesSquare);
         this.drawRedrawCell(isInlifeCells, coordinatesSquare);
-    }
+    },
 }
 
 function appRules () {
@@ -147,7 +147,7 @@ function appRules () {
 
 function Game () {
     let surviveCells = []; 
-    let NewBornCells = [];
+    let NewBornCells = []; //!
     let interval = 1000;
 
     this.gameLoop = e => {
