@@ -193,8 +193,6 @@ window.onclick = function(event) {
   }
 }
 
-
-//#! make global variables out of color so that changing it need only one variable
 // canvas
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -222,9 +220,6 @@ document.addEventListener("keydown", (e) => {
 function ClickCanvas(e) {
     initNullGen.addLiveCells(canvas, e);     
 }
-
-
-//if (e.keyCode === 13)
 
 
 
