@@ -152,27 +152,24 @@ const Game = {
     interval : 1000,
 
     gameLoop : function () {
-        if (true) { // enter press -> start generation cycle
-            // prevent clicking new cell after start
-            canvas.removeEventListener('mousedown',ClickCanvas)
-            
-            setInterval(function run() {
-                //redraw previous generaton
-                for (cell of lifeCells) {
-                    rectangle(colorCanvas, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
-                }
+        // prevent clicking new cell after start
+        canvas.removeEventListener('mousedown',ClickCanvas)
+        
+        setInterval(function run() {
+            //redraw previous generaton
+            for (cell of lifeCells) {
+                rectangle(colorCanvas, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+            }
 
-                this.surviveCells = lifeCells.filter(appRules.popDeadCells);
-                this.newBornCells = appRules.newBornCells();
-                lifeCells = surviveCells.concat(newBornCells);
-                
-                // draw new generation
-                for (cell of lifeCells) {
-                    rectangle(colorCell, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
-                }
-            }, this.interval);
+            this.surviveCells = lifeCells.filter(appRules.popDeadCells);
+            this.newBornCells = appRules.newBornCells();
+            lifeCells = surviveCells.concat(newBornCells);
             
-        }
+            // draw new generation
+            for (cell of lifeCells) {
+                rectangle(colorCell, cell[0]*tileSize, cell[1]*tileSize, tileSize - 1, tileSize - 1); 
+            }
+        }, this.interval);      
     }
 }
 
@@ -213,6 +210,7 @@ window.onclick = function(event) {
 // EVENT LISTENERS
 canvas.addEventListener('mousedown',ClickCanvas);
 
+// enter press -> start generation cycle
 document.addEventListener("keydown", (e) => {
     if (e.keyCode === 13) { Game.gameLoop() }
 })
