@@ -52,18 +52,10 @@ const initNullGen = {
     pushPopCell : function (isInlifeCells, coordinatesSquare, index) {           
         if (isInlifeCells == false) {
             lifeCells.push(coordinatesSquare)
-            console.log("added", isInlifeCells);
         } else {
             
             lifeCells.splice(index,1);
-            //lifeCells.pop(coordinatesSquare)
-
-
-
-            console.log("discarted", isInlifeCells);
         }
-
-        console.log(lifeCells)
 
     },
     // draw new cell or redraw poped cell back to canvas color 
