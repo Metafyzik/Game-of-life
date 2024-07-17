@@ -36,21 +36,35 @@ const initNullGen = {
     // check if clicked square is in lifeCells
     checkCLick : function (coordinatesSquare) { 
         let isInlifeCells = false
-
-        lifeCells.forEach(square => { 
-            if (JSON.stringify(square) == JSON.stringify(coordinatesSquare)) {
+        let index;
+ 
+        for (let i =0; i< lifeCells.length; i++) {
+            if (JSON.stringify(lifeCells[i]) == JSON.stringify(coordinatesSquare)) {
                 isInlifeCells = true;
+                index = i;
+                break;
             }   
-        })
-        return isInlifeCells;
+        }
+
+        return {isInlifeCells, index}; //return also index
     },
     // push or pop cell from lifeCells
-    pushPopCell : function (isInlifeCells, coordinatesSquare) {           
+    pushPopCell : function (isInlifeCells, coordinatesSquare, index) {           
         if (isInlifeCells == false) {
             lifeCells.push(coordinatesSquare)
+            console.log("added", isInlifeCells);
         } else {
-            lifeCells.pop(coordinatesSquare)
+            
+            lifeCells.splice(index,1);
+            //lifeCells.pop(coordinatesSquare)
+
+
+
+            console.log("discarted", isInlifeCells);
         }
+
+        console.log(lifeCells)
+
     },
     // draw new cell or redraw poped cell back to canvas color 
     drawRedrawCell : function (isInlifeCells, coordinatesSquare) {
@@ -68,8 +82,8 @@ const initNullGen = {
         let coordinatesClick = this.getCursorPosition(canvas, e);
         let coordinatesSquare = this.clickedSquare(coordinatesClick);
     
-        let isInlifeCells = this.checkCLick(coordinatesSquare);
-        this.pushPopCell(isInlifeCells, coordinatesSquare);
+        let {isInlifeCells, index} = this.checkCLick(coordinatesSquare);
+        this.pushPopCell(isInlifeCells, coordinatesSquare, index);
         this.drawRedrawCell(isInlifeCells, coordinatesSquare);
     },
 }
@@ -181,8 +195,8 @@ const tileSize = 15;
 const tileCountX = canvas.width = window.innerWidth;
 const tileCountY = canvas.height = window.innerHeight;
 
-const colorCanvas = "rgb(0,0,0)"
-const colorCell = "rgb(0,255,0)"
+const colorCanvas = "rgb(255,255,255)"
+const colorCell = "rgb(0,0,0)"
 // drawing green background in size of the canvas 
 rectangle(colorCell, 0, 0, canvas.width, canvas.height); 
 // white squares in to black canvas to create grid 
@@ -200,6 +214,7 @@ var span = document.getElementsByClassName("close")[0];
 span.onclick = function() {
   modal.style.display = "none";
 }
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
@@ -218,7 +233,3 @@ document.addEventListener("keydown", (e) => {
 function ClickCanvas(e) {
     initNullGen.addLiveCells(canvas, e);     
 }
-
-
-
-
