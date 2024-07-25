@@ -1,1 +1,1 @@
-Conway's game of life javascript. You can check it [here](http://metafyzik.github.io/Game-of-life/).
+Conway's game of life in javascript. You can check it [here](http://metafyzik.github.io/Game-of-life/).
